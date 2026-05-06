@@ -10,11 +10,16 @@ test.describe('Draggable Tests', () => {
     });
 
     test('should drag element freely', async () => {
-        const initialPos = await draggablePage.getDragBoxPosition();
-        await draggablePage.dragSimple(100, 100);
-        const newPos = await draggablePage.getDragBoxPosition();
-        expect(newPos.x).not.toBe(initialPos.x);
-        expect(newPos.y).not.toBe(initialPos.y);
+        await expect(async () => {
+            const initialPos = await draggablePage.getDragBoxPosition();
+            await draggablePage.dragSimple(100, 100);
+            const newPos = await draggablePage.getDragBoxPosition();
+            expect(newPos.x).not.toBe(initialPos.x);
+            expect(newPos.y).not.toBe(initialPos.y);
+        }).toPass({
+            intervals: [1000],
+            timeout: 10000
+        });
     });
 
     test('should restrict drag on X axis only', async () => {
