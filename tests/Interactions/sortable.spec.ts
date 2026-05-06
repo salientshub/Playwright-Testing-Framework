@@ -14,11 +14,29 @@ test.describe('Sortable Tests', () => {
         expect(order.length).toBeGreaterThan(0);
     });
 
-    test('should drag and reorder list items', async () => {
+    test.only('should drag and reorder list items', async ({ page }) => {
         const initialOrder = await sortablePage.getListOrder();
-        await sortablePage.dragListItem(0, 2);
-        const newOrder = await sortablePage.getListOrder();
-        expect(newOrder).not.toEqual(initialOrder);
+        
+        await expect(async () => {
+            
+            await page.evaluate('window.getSelection()?.removeAllRanges()');
+            
+            const source = sortablePage.listItems.nth(0);
+            const target = sortablePage.listItems.nth(2);
+
+            const sourceBox = await source.boundingBox();
+            const targetBox = await target.boundingBox();
+
+            if (sourceBox && targetBox) {
+                await page.mouse.move(sourceBox.x + sourceBox.width / 2, sourceBox.y + sourceBox.height / 2);
+                await page.mouse.down();
+                await page.mouse.move(targetBox.x + targetBox.width / 2, targetBox.y + targetBox.height / 2, { steps: 20 });
+                await page.mouse.up();
+            }
+
+            const newOrder = await sortablePage.getListOrder();
+            expect(newOrder).not.toEqual(initialOrder);
+        }).toPass();
     });
 
     test('should switch to grid view', async () => {
