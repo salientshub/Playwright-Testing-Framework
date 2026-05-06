@@ -12,13 +12,13 @@ test.describe('Droppable Tests', () => {
     test('should drop element in simple tab', async ({ page }) => {
         await droppablePage.dragToDropSimple();
 
-        await expect(droppablePage.droppable).toContainText(/Dropped!/);
+        await expect(droppablePage.afterdropable).toContainText(/Dropped!/);
     });
 
     test('should accept acceptable element', async () => {
         await droppablePage.switchToAccept();
         await droppablePage.dragAcceptableToDropZone();
-        await expect(droppablePage.acceptDropZone).toHaveText(/Dropped!/);
+        await expect(droppablePage.afterdropableAccept).toHaveText(/Dropped!/);
     });
 
     test('should not accept non-acceptable element', async () => {

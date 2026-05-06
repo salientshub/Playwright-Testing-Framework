@@ -9,6 +9,8 @@ export class DroppablePage extends BasePage {
     readonly revertTab: Locator;
     readonly draggable: Locator;
     readonly droppable: Locator;
+    readonly afterdropable: Locator;
+    readonly afterdropableAccept: Locator;
     readonly acceptableDrag: Locator;
     readonly notAcceptableDrag: Locator;
     readonly acceptDropZone: Locator;
@@ -21,6 +23,8 @@ export class DroppablePage extends BasePage {
         this.revertTab = page.locator('#droppableExample-tab-revertable');
         this.draggable = page.locator('#draggable');
         this.droppable = page.locator('#droppableExample-tabpane-simple #droppable');
+        this.afterdropable = page.locator(".drop-box.ui-droppable.ui-state-highlight").first();
+        this.afterdropableAccept = page.locator("div.drop-box.ui-droppable.ui-state-highlight");
         this.acceptableDrag = page.locator('#acceptable');
         this.notAcceptableDrag = page.locator('#acceptDropContainer .drag-box').filter({ hasText: 'Not Acceptable' });
         this.acceptDropZone = page.locator('#acceptDropContainer .drop-box');
