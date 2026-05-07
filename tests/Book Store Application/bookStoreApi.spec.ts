@@ -5,7 +5,7 @@ import { bookStoreUser } from '../../utils/testData';
 test.describe('Book Store API Tests', () => {
     let apiClient: ApiClient;
 
-    test.beforeAll(async ({ request }) => {
+    test.beforeEach(async ({ request }) => {
         apiClient = new ApiClient(request);
     });
 

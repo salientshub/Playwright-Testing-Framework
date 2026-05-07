@@ -13,7 +13,7 @@ export class DraggablePage extends BasePage {
         super(page);
         this.simpleTab = page.locator('#draggableExample-tab-simple');
         this.axisRestrictedTab = page.locator('#draggableExample-tab-axisRestriction');
-        this.dragBox = page.locator('div#dragBox.drag-box.ui-draggable.ui-draggable-handle');
+        this.dragBox = page.locator('#dragBox');
         this.restrictedX = page.locator('#restrictedX');
         this.restrictedY = page.locator('#restrictedY');
     }

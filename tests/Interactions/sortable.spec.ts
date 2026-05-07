@@ -14,13 +14,13 @@ test.describe('Sortable Tests', () => {
         expect(order.length).toBeGreaterThan(0);
     });
 
-    test.only('should drag and reorder list items', async ({ page }) => {
+    test('should drag and reorder list items', async ({ page }) => {
         const initialOrder = await sortablePage.getListOrder();
-        
+
         await expect(async () => {
-            
+
             await page.evaluate('window.getSelection()?.removeAllRanges()');
-            
+
             const source = sortablePage.listItems.nth(0);
             const target = sortablePage.listItems.nth(2);
 

@@ -4,7 +4,7 @@ export default defineConfig({
   testDir: './tests',
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 1 : undefined,
   timeout: 60000,
   reporter: [
@@ -19,32 +19,32 @@ export default defineConfig({
   projects: [
     {
       name: 'Elements',
-      testDir: './tests/Elements',
+      testDir: "./tests/Elements",
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'Forms',
-      testDir: './tests/Forms',
+      testDir: "./tests/Forms",
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'Alerts_Frame_Windows',
-      testDir: './tests/Alerts, Frame & ...',
+      testDir: "./tests/Alerts, Frame & Windows",
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'Widgets',
-      testDir: './tests/Widgets',
+      testDir: "./tests/Widgets",
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'Interactions',
-      testDir: './tests/Interactions',
+      testDir: "./tests/Interactions",
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'BookStore',
-      testDir: './tests/Book Store Appli...',
+      testDir: "./tests/Book Store Application",
       use: { ...devices['Desktop Chrome'] },
     },
   ],

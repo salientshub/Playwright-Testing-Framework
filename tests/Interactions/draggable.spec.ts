@@ -9,8 +9,11 @@ test.describe('Draggable Tests', () => {
         await draggablePage.navigate('/dragabble');
     });
 
-    test('should drag element freely', async () => {
+    test('should drag element freely', async ({ page }) => {
         await expect(async () => {
+            // Clear text selection to prevent browser text-drag interference
+            await page.evaluate('window.getSelection()?.removeAllRanges()');
+            
             const initialPos = await draggablePage.getDragBoxPosition();
             await draggablePage.dragSimple(100, 100);
             const newPos = await draggablePage.getDragBoxPosition();
