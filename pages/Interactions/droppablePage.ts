@@ -9,8 +9,6 @@ export class DroppablePage extends BasePage {
     readonly revertTab: Locator;
     readonly draggable: Locator;
     readonly droppable: Locator;
-    readonly afterdropable: Locator;
-    readonly afterdropableAccept: Locator;
     readonly acceptableDrag: Locator;
     readonly notAcceptableDrag: Locator;
     readonly acceptDropZone: Locator;
@@ -23,11 +21,22 @@ export class DroppablePage extends BasePage {
         this.revertTab = page.locator('#droppableExample-tab-revertable');
         this.draggable = page.locator('#draggable');
         this.droppable = page.locator('#droppableExample-tabpane-simple #droppable');
-        this.afterdropable = page.locator(".drop-box.ui-droppable.ui-state-highlight").first();
-        this.afterdropableAccept = page.locator("div.drop-box.ui-droppable.ui-state-highlight");
         this.acceptableDrag = page.locator('#acceptable');
         this.notAcceptableDrag = page.locator('#acceptDropContainer .drag-box').filter({ hasText: 'Not Acceptable' });
         this.acceptDropZone = page.locator('#acceptDropContainer .drop-box');
+    }
+
+    /** Remove ads and fixed footer that intercept mouse events */
+    private async removeOverlays() {
+        await this.page.evaluate(() => {
+            // Remove all ad iframes
+            document.querySelectorAll('iframe').forEach(el => el.remove());
+            // Remove ad container divs
+            document.querySelectorAll('[id*="Ad.Plus"], [id*="google_ads"], .ad, #adplus-anchor').forEach(el => el.remove());
+            // Make footer non-fixed so it doesn't overlay the drag area
+            const footer = document.querySelector('footer');
+            if (footer) (footer as HTMLElement).style.position = 'static';
+        });
     }
 
     async switchToSimple() {
@@ -36,38 +45,34 @@ export class DroppablePage extends BasePage {
 
     async switchToAccept() {
         await this.safeClick(this.acceptTab);
-        // Wait for the tab animation to finish
-        await this.page.waitForTimeout(500);
+        await this.page.waitForTimeout(300);
     }
 
     private async performManualDrag(source: Locator, target: Locator) {
-        // Ensure both elements are in view before starting the drag
-        await target.scrollIntoViewIfNeeded();
+        // Remove ads/overlays that steal mouse events
+        await this.removeOverlays();
+        // Clear text selection to prevent text-drag interference
+        await this.page.evaluate('window.getSelection()?.removeAllRanges()');
+
         await source.scrollIntoViewIfNeeded();
 
         const sourceBox = await source.boundingBox();
         const targetBox = await target.boundingBox();
-        if (!sourceBox || !targetBox) return;
+        if (!sourceBox || !targetBox) throw new Error('Source or target element not found');
 
         const sourceX = sourceBox.x + sourceBox.width / 2;
         const sourceY = sourceBox.y + sourceBox.height / 2;
-
-        // Target the center of the dropzone, but 30px lower to be safe
         const targetX = targetBox.x + targetBox.width / 2;
-        const targetY = targetBox.y + targetBox.height / 2 + 30;
+        const targetY = targetBox.y + targetBox.height / 2;
 
         await this.page.mouse.move(sourceX, sourceY);
         await this.page.mouse.down();
-
         // Pause to let jQuery UI register the mousedown
         await this.page.waitForTimeout(200);
-
-        // Move the mouse slowly using steps so jQuery UI tracks the path
-        await this.page.mouse.move(targetX, targetY, { steps: 20 });
-
+        // Move slowly so jQuery UI tracks the path
+        await this.page.mouse.move(targetX, targetY, { steps: 25 });
         // Pause to let jQuery UI register the hover over the drop zone
         await this.page.waitForTimeout(200);
-
         await this.page.mouse.up();
     }
 

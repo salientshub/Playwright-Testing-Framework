@@ -9,11 +9,8 @@ test.describe('Draggable Tests', () => {
         await draggablePage.navigate('/dragabble');
     });
 
-    test('should drag element freely', async ({ page }) => {
+    test('should drag element freely', async () => {
         await expect(async () => {
-            // Clear text selection to prevent browser text-drag interference
-            await page.evaluate('window.getSelection()?.removeAllRanges()');
-            
             const initialPos = await draggablePage.getDragBoxPosition();
             await draggablePage.dragSimple(100, 100);
             const newPos = await draggablePage.getDragBoxPosition();
@@ -21,16 +18,20 @@ test.describe('Draggable Tests', () => {
             expect(newPos.y).not.toBe(initialPos.y);
         }).toPass({
             intervals: [1000],
-            timeout: 10000
+            timeout: 15000
         });
     });
 
     test('should restrict drag on X axis only', async () => {
-        await draggablePage.switchToAxisRestricted();
-        const restrictedX = draggablePage.restrictedX;
-        const initialBox = await restrictedX.boundingBox();
-        await draggablePage.dragXRestricted(100);
-        const newBox = await restrictedX.boundingBox();
-        expect(newBox!.x).not.toBe(initialBox!.x);
+        await expect(async () => {
+            await draggablePage.switchToAxisRestricted();
+            const initialBox = await draggablePage.restrictedX.boundingBox();
+            await draggablePage.dragXRestricted(100);
+            const newBox = await draggablePage.restrictedX.boundingBox();
+            expect(newBox!.x).not.toBe(initialBox!.x);
+        }).toPass({
+            intervals: [1000],
+            timeout: 15000
+        });
     });
 });

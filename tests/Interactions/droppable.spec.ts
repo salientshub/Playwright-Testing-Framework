@@ -9,16 +9,25 @@ test.describe('Droppable Tests', () => {
         await droppablePage.navigate('/droppable');
     });
 
-    test('should drop element in simple tab', async ({ page }) => {
-        await droppablePage.dragToDropSimple();
-
-        await expect(droppablePage.droppable).toContainText(/Dropped!/);
+    test('should drop element in simple tab', async () => {
+        await expect(async () => {
+            await droppablePage.dragToDropSimple();
+            await expect(droppablePage.droppable).toContainText(/Dropped!/);
+        }).toPass({
+            intervals: [1000],
+            timeout: 15000
+        });
     });
 
     test('should accept acceptable element', async () => {
-        await droppablePage.switchToAccept();
-        await droppablePage.dragAcceptableToDropZone();
-        await expect(droppablePage.acceptDropZone).toHaveText(/Dropped!/);
+        await expect(async () => {
+            await droppablePage.switchToAccept();
+            await droppablePage.dragAcceptableToDropZone();
+            await expect(droppablePage.acceptDropZone).toHaveText(/Dropped!/);
+        }).toPass({
+            intervals: [1000],
+            timeout: 15000
+        });
     });
 
     test('should not accept non-acceptable element', async () => {

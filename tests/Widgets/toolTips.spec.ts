@@ -11,13 +11,11 @@ test.describe('Tool Tips Tests', () => {
 
     test('should show tooltip on button hover', async () => {
         await toolTipsPage.hoverOverButton();
-        const text = await toolTipsPage.getToolTipText();
-        expect(text).toContain('You hovered over the Button');
+        await expect(toolTipsPage.toolTip).toContainText('You hovered over the Button');
     });
 
     test('should show tooltip on input hover', async () => {
         await toolTipsPage.hoverOverInput();
-        const text = await toolTipsPage.getToolTipText();
-        expect(text).toContain('You hovered over the text field');
+        await expect(toolTipsPage.toolTip).toContainText('You hovered over the text field');
     });
 });

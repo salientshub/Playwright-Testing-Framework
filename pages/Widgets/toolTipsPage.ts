@@ -11,7 +11,8 @@ export class ToolTipsPage extends BasePage {
         super(page);
         this.hoverButton = page.locator('#toolTipButton');
         this.hoverInput = page.locator('#toolTipTextField');
-        this.toolTip = page.locator('.tooltip-inner');
+        // Use role-based locator — the tooltip has role="tooltip" in the DOM
+        this.toolTip = page.getByRole('tooltip');
     }
 
     async hoverOverButton() {
@@ -23,7 +24,8 @@ export class ToolTipsPage extends BasePage {
     }
 
     async getToolTipText(): Promise<string> {
-        await this.page.waitForSelector('.tooltip-inner', { state: 'visible' });
+        // No need for waitForSelector — the locator-based assertion
+        // in the test will auto-wait for visibility.
         return (await this.toolTip.textContent()) || '';
     }
 }
