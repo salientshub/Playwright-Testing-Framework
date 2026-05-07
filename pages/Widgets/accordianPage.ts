@@ -12,12 +12,12 @@ export class AccordianPage extends BasePage {
 
     constructor(page: Page) {
         super(page);
-        this.section1Heading = page.locator('#section1Heading');
-        this.section1Content = page.locator('#section1Content');
-        this.section2Heading = page.locator('#section2Heading');
-        this.section2Content = page.locator('#section2Content');
-        this.section3Heading = page.locator('#section3Heading');
-        this.section3Content = page.locator('#section3Content');
+        this.section1Heading = page.locator('.accordion-item', { hasText: 'What is Lorem Ipsum?' });
+        this.section1Content = this.section1Heading.locator('.accordion-collapse');
+        this.section2Heading = page.locator('.accordion-item', { hasText: 'Where does it come from?' });
+        this.section2Content = this.section2Heading.locator('.accordion-collapse');
+        this.section3Heading = page.locator('.accordion-item', { hasText: 'Why do we use it?' });
+        this.section3Content = this.section3Heading.locator('.accordion-collapse');
     }
 
     async clickSection1() {
