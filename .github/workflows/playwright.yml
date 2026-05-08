@@ -1,10 +1,18 @@
+# ╔══════════════════════════════════════════════════════════════════════╗
+# ║  Playwright Tests with Allure Report — GitHub Actions CI/CD        ║
+# ║  Runs tests, generates Allure report, deploys to GitHub Pages      ║
+# ╚══════════════════════════════════════════════════════════════════════╝
+
 name: Playwright Tests with Allure Report
 
 on:
+  # Auto-trigger on push/PR to main
   push:
     branches: [main]
   pull_request:
     branches: [main]
+
+  # Manual trigger with test suite selector
   workflow_dispatch:
     inputs:
       test_suite:
@@ -23,58 +31,75 @@ on:
           - interactions
           - bookstore
 
-# Grant GITHUB_TOKEN write access so the report can be deployed to GitHub Pages
+# Grant GITHUB_TOKEN write access for GitHub Pages deployment
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Only allow one deployment at a time
+# Only allow one deployment at a time, cancel in-progress runs
 concurrency:
   group: 'pages'
   cancel-in-progress: true
 
 jobs:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  JOB 1: Run Playwright Tests
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   test:
-    name: Run Playwright Tests
+    name: 🧪 Run Playwright Tests
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
     steps:
-      - name: Checkout Repository
+      # ─── Checkout Code ───────────────────────────────────────────────
+      - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      # ─── Setup Node.js with npm cache ────────────────────────────────
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'npm'
 
-      - name: Install Dependencies
+      # ─── Install npm dependencies ───────────────────────────────────
+      - name: 📦 Install Dependencies
         run: npm ci
 
-      - name: Install Playwright Browsers
+      # ─── Install Playwright chromium browser ─────────────────────────
+      - name: 🌐 Install Playwright Browsers
         run: npx playwright install --with-deps chromium
 
-      # ─── Determine which grep tag to use ────────────────────────────
-      - name: Set Test Grep Filter
+      # ─── Determine which grep tag to use ─────────────────────────────
+      - name: 🏷️ Set Test Grep Filter
         id: grep
         run: |
           SUITE="${{ github.event.inputs.test_suite || 'all' }}"
           case "$SUITE" in
-            sanity)       echo "grep=@sanity" >> $GITHUB_OUTPUT ;;
-            regression)   echo "grep=@regression" >> $GITHUB_OUTPUT ;;
-            elements)     echo "grep=@elements" >> $GITHUB_OUTPUT ;;
-            forms)        echo "grep=@forms" >> $GITHUB_OUTPUT ;;
-            afw)          echo "grep=@afw" >> $GITHUB_OUTPUT ;;
-            widgets)      echo "grep=@widgets" >> $GITHUB_OUTPUT ;;
+            sanity)        echo "grep=@sanity" >> $GITHUB_OUTPUT ;;
+            regression)    echo "grep=@regression" >> $GITHUB_OUTPUT ;;
+            elements)      echo "grep=@elements" >> $GITHUB_OUTPUT ;;
+            forms)         echo "grep=@forms" >> $GITHUB_OUTPUT ;;
+            afw)           echo "grep=@afw" >> $GITHUB_OUTPUT ;;
+            widgets)       echo "grep=@widgets" >> $GITHUB_OUTPUT ;;
             interactions)  echo "grep=@interactions" >> $GITHUB_OUTPUT ;;
-            bookstore)    echo "grep=@bookstore" >> $GITHUB_OUTPUT ;;
-            *)            echo "grep=@sanity|@regression" >> $GITHUB_OUTPUT ;;
+            bookstore)     echo "grep=@bookstore" >> $GITHUB_OUTPUT ;;
+            *)             echo "grep=@sanity|@regression" >> $GITHUB_OUTPUT ;;
           esac
 
-      # ─── Restore previous Allure history for trend charts ───────────
-      - name: Restore Allure History
+      # ─── Display selected suite in workflow log ──────────────────────
+      - name: 📋 Test Suite Info
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🎯 Test Suite: ${{ github.event.inputs.test_suite || 'all' }}"
+          echo "🔍 Grep Filter: ${{ steps.grep.outputs.grep }}"
+          echo "🌿 Branch: ${{ github.ref_name }}"
+          echo "📝 Commit: ${{ github.sha }}"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+      # ─── Restore previous Allure history for trend charts ────────────
+      - name: 📊 Restore Allure History
         uses: actions/cache@v4
         with:
           path: allure-history
@@ -82,28 +107,44 @@ jobs:
           restore-keys: |
             allure-history-main
 
-      # ─── Run Tests ─────────────────────────────────────────────────
-      - name: Run Playwright Tests
+      # ─── Run Playwright Tests ────────────────────────────────────────
+      - name: 🚀 Run Playwright Tests
         run: npx playwright test --grep "${{ steps.grep.outputs.grep }}"
         continue-on-error: true
         env:
           CI: true
 
-      # ─── Copy categories config into allure-results ─────────────────
-      - name: Copy Allure Categories
+      # ─── Copy categories config into allure-results ──────────────────
+      - name: 📂 Copy Allure Categories
         if: always()
         run: |
           cp allure-categories.json allure-results/categories.json 2>/dev/null || true
 
-      # ─── Copy previous history into allure-results ──────────────────
-      - name: Copy Allure History
+      # ─── Inject environment info into allure-results ─────────────────
+      - name: 🌍 Write Allure Environment Properties
+        if: always()
+        run: |
+          cat > allure-results/environment.properties <<EOF
+          Framework=Playwright
+          Base.URL=https://demoqa.com
+          Node.Version=$(node --version)
+          OS=$(uname -s)
+          Browser=Chromium
+          Test.Suite=${{ github.event.inputs.test_suite || 'all' }}
+          Branch=${{ github.ref_name }}
+          Commit=${{ github.sha }}
+          Runner=${{ runner.os }}
+          EOF
+
+      # ─── Copy previous history into allure-results ───────────────────
+      - name: 📈 Copy Allure History
         if: always()
         run: |
           mkdir -p allure-results/history
           cp -r allure-history/history/* allure-results/history/ 2>/dev/null || true
 
-      # ─── Generate Allure Report ─────────────────────────────────────
-      - name: Generate Allure Report
+      # ─── Generate Allure Report ──────────────────────────────────────
+      - name: 📊 Generate Allure Report
         if: always()
         uses: simple-elf/allure-report-action@master
         with:
@@ -112,8 +153,8 @@ jobs:
           allure_history: allure-history
           keep_reports: 30
 
-      # ─── Upload Allure Report as Artifact ───────────────────────────
-      - name: Upload Allure Report Artifact
+      # ─── Upload Allure Report as Artifact ────────────────────────────
+      - name: 📤 Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -121,8 +162,8 @@ jobs:
           path: allure-report/
           retention-days: 30
 
-      # ─── Upload Playwright HTML Report as Artifact ──────────────────
-      - name: Upload Playwright Report Artifact
+      # ─── Upload Playwright HTML Report as Artifact ───────────────────
+      - name: 📤 Upload Playwright Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -130,8 +171,8 @@ jobs:
           path: playwright-report/
           retention-days: 30
 
-      # ─── Upload Test Results for debugging ──────────────────────────
-      - name: Upload Test Results
+      # ─── Upload Test Results (traces/videos) on failure ──────────────
+      - name: 📤 Upload Test Results
         if: failure()
         uses: actions/upload-artifact@v4
         with:
@@ -139,9 +180,11 @@ jobs:
           path: test-results/
           retention-days: 7
 
-  # ─── Deploy Allure Report to GitHub Pages ──────────────────────────
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  #  JOB 2: Deploy Allure Report to GitHub Pages
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   deploy-report:
-    name: Deploy Allure Report
+    name: 🚀 Deploy Allure Report to GitHub Pages
     needs: test
     if: always() && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
@@ -151,20 +194,20 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Download Allure Report
+      - name: 📥 Download Allure Report
         uses: actions/download-artifact@v4
         with:
           name: allure-report
           path: allure-report
 
-      - name: Setup Pages
+      - name: ⚙️ Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload Pages Artifact
+      - name: 📤 Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: allure-report
 
-      - name: Deploy to GitHub Pages
+      - name: 🌐 Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
