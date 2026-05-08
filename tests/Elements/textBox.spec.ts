@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TextBoxPage } from '../../pages/Elements/textBoxPage';
 import { textBoxData } from '../../utils/testData';
+import { allure } from 'allure-js-commons';
 
 test.describe('Text Box Tests', () => {
   let textBoxPage: TextBoxPage;
@@ -10,7 +11,12 @@ test.describe('Text Box Tests', () => {
     await textBoxPage.navigate('/text-box');
   });
 
-  test('should submit valid data', async () => {
+  test('should submit valid data @sanity @elements', async () => {
+    await allure.epic('Elements');
+    await allure.feature('Text Box');
+    await allure.story('Submit Valid Data');
+    await allure.severity('critical');
+
     await textBoxPage.fillForm(textBoxData.valid);
     await textBoxPage.submitForm();
     await textBoxPage.verifyOutputContains(textBoxData.valid.fullName);

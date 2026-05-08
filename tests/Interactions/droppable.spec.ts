@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { DroppablePage } from '../../pages/Interactions/droppablePage';
+import { allure } from 'allure-js-commons';
 
 test.describe('Droppable Tests', () => {
     let droppablePage: DroppablePage;
@@ -9,7 +10,12 @@ test.describe('Droppable Tests', () => {
         await droppablePage.navigate('/droppable');
     });
 
-    test('should drop element in simple tab', async () => {
+    test('should drop element in simple tab @sanity @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Droppable');
+        await allure.story('Simple Drop');
+        await allure.severity('critical');
+
         await expect(async () => {
             await droppablePage.dragToDropSimple();
             await expect(droppablePage.droppable).toContainText(/Dropped!/);
@@ -19,7 +25,12 @@ test.describe('Droppable Tests', () => {
         });
     });
 
-    test('should accept acceptable element', async () => {
+    test('should accept acceptable element @regression @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Droppable');
+        await allure.story('Accept Element');
+        await allure.severity('normal');
+
         await expect(async () => {
             await droppablePage.switchToAccept();
             await droppablePage.dragAcceptableToDropZone();
@@ -30,7 +41,12 @@ test.describe('Droppable Tests', () => {
         });
     });
 
-    test('should not accept non-acceptable element', async () => {
+    test('should not accept non-acceptable element @regression @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Droppable');
+        await allure.story('Reject Non-Acceptable Element');
+        await allure.severity('normal');
+
         await droppablePage.switchToAccept();
         await droppablePage.dragNotAcceptableToDropZone();
         await expect(droppablePage.acceptDropZone).not.toContainText(/Dropped!/);

@@ -7,15 +7,40 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? 1 : undefined,
   timeout: 60000,
+
+  // ─── Grep-based Tag Filtering ─────────────────────────────────────
+  // Use CLI:  npx playwright test --grep @sanity
+  //           npx playwright test --grep @regression
+  //           npx playwright test --grep @elements
+  //           npx playwright test --grep "@sanity|@regression"
+  // Or set via env in CI:  PLAYWRIGHT_GREP=@sanity npx playwright test
+
   reporter: [
-    ['html', { open: 'never' }]
+    // Default HTML reporter — always available for local debugging
+    ['html', { open: 'never' }],
+
+    // Allure reporter — generates raw results into ./allure-results
+    // These JSON/attachment files are later processed by `allure generate`
+    // to produce the full interactive report in ./allure-report
+    ['allure-playwright', {
+      outputFolder: 'allure-results',       // Where raw test result JSON files go
+      detail: true,                         // Include test step details
+      suiteTitle: true,                     // Group tests by describe() block titles
+      environmentInfo: {                    // Static env info shown in Allure dashboard
+        Framework: 'Playwright',
+        BaseURL: 'https://demoqa.com',
+        NodeVersion: process.version,
+      },
+    }],
   ],
+
   use: {
     baseURL: 'https://demoqa.com',
     trace: 'on',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
   },
+
   projects: [
     {
       name: 'Elements',

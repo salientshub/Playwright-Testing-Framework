@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { DraggablePage } from '../../pages/Interactions/draggablePage';
+import { allure } from 'allure-js-commons';
 
 test.describe('Draggable Tests', () => {
     let draggablePage: DraggablePage;
@@ -9,7 +10,12 @@ test.describe('Draggable Tests', () => {
         await draggablePage.navigate('/dragabble');
     });
 
-    test('should drag element freely', async () => {
+    test('should drag element freely @sanity @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Draggable');
+        await allure.story('Free Drag');
+        await allure.severity('critical');
+
         await expect(async () => {
             const initialPos = await draggablePage.getDragBoxPosition();
             await draggablePage.dragSimple(100, 100);
@@ -22,7 +28,12 @@ test.describe('Draggable Tests', () => {
         });
     });
 
-    test('should restrict drag on X axis only', async () => {
+    test('should restrict drag on X axis only @regression @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Draggable');
+        await allure.story('Axis Restricted Drag');
+        await allure.severity('normal');
+
         await expect(async () => {
             await draggablePage.switchToAxisRestricted();
             const initialBox = await draggablePage.restrictedX.boundingBox();

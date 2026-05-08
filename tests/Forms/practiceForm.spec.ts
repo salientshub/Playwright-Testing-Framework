@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { PracticeFormPage } from '../../pages/Forms/practiceFormPage';
 import { practiceFormData } from '../../utils/testData';
+import { allure } from 'allure-js-commons';
 
 test.describe('Practice Form Tests', () => {
     let formPage: PracticeFormPage;
@@ -10,13 +11,23 @@ test.describe('Practice Form Tests', () => {
         await formPage.navigate('/automation-practice-form');
     });
 
-    test('should submit the form with all fields', async () => {
+    test('should submit the form with all fields @sanity @forms', async () => {
+        await allure.epic('Forms');
+        await allure.feature('Practice Form');
+        await allure.story('Submit All Fields');
+        await allure.severity('critical');
+
         await formPage.fillForm(practiceFormData);
         await formPage.submit();
         expect(await formPage.isModalVisible()).toBe(true);
     });
 
-    test('should submit form with required fields only', async () => {
+    test('should submit form with required fields only @regression @forms', async () => {
+        await allure.epic('Forms');
+        await allure.feature('Practice Form');
+        await allure.story('Submit Required Fields Only');
+        await allure.severity('normal');
+
         await formPage.fillForm({
             firstName: 'John',
             lastName: 'Doe',

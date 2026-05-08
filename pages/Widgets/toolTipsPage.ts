@@ -11,7 +11,6 @@ export class ToolTipsPage extends BasePage {
         super(page);
         this.hoverButton = page.locator('#toolTipButton');
         this.hoverInput = page.locator('#toolTipTextField');
-        // Use role-based locator — the tooltip has role="tooltip" in the DOM
         this.toolTip = page.getByRole('tooltip');
     }
 

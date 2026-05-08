@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ProgressBarPage } from '../../pages/Widgets/progressBarPage';
+import { allure } from 'allure-js-commons';
 
 test.describe('Progress Bar Tests', () => {
     let progressPage: ProgressBarPage;
@@ -9,14 +10,24 @@ test.describe('Progress Bar Tests', () => {
         await progressPage.navigate('/progress-bar');
     });
 
-    test('should start and reach 100%', async () => {
+    test('should start and reach 100% @sanity @widgets', async () => {
+        await allure.epic('Widgets');
+        await allure.feature('Progress Bar');
+        await allure.story('Complete Progress');
+        await allure.severity('critical');
+
         await progressPage.start();
         await progressPage.waitForProgressComplete(15000);
         const value = await progressPage.getProgressValue();
         expect(value).toBe('100');
     });
 
-    test('should stop progress midway', async () => {
+    test('should stop progress midway @regression @widgets', async () => {
+        await allure.epic('Widgets');
+        await allure.feature('Progress Bar');
+        await allure.story('Stop Midway');
+        await allure.severity('normal');
+
         await progressPage.start();
         await progressPage.waitForProgressAtLeast(25, 10000);
         await progressPage.stop();

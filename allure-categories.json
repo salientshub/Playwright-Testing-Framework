@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Product Defects",
+    "description": "Tests that failed due to real bugs in the application",
+    "matchedStatuses": ["failed"]
+  },
+  {
+    "name": "Test Defects",
+    "description": "Tests with broken assertions or test code errors",
+    "matchedStatuses": ["broken"]
+  },
+  {
+    "name": "Known Issues",
+    "description": "Tests with known defects that are expected to fail",
+    "matchedStatuses": ["unknown"]
+  }
+]

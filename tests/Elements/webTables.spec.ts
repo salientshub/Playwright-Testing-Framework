@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { WebTablesPage } from '../../pages/Elements/webTablesPage';
+import { allure } from 'allure-js-commons';
 
 test.describe('Web Tables Tests', () => {
   let webTablesPage: WebTablesPage;
@@ -9,7 +10,12 @@ test.describe('Web Tables Tests', () => {
     await webTablesPage.navigate('/webtables');
   });
 
-  test('should add a new user', async () => {
+  test('should add a new user @sanity @elements', async () => {
+    await allure.epic('Elements');
+    await allure.feature('Web Tables');
+    await allure.story('Add New User');
+    await allure.severity('critical');
+
     const newUser = {
       firstName: 'Alice',
       lastName: 'Smith',
@@ -27,7 +33,12 @@ test.describe('Web Tables Tests', () => {
     expect(await webTablesPage.getUserCount()).toBeGreaterThan(0);
   });
 
-  test('should delete a user', async () => {
+  test('should delete a user @regression @elements', async () => {
+    await allure.epic('Elements');
+    await allure.feature('Web Tables');
+    await allure.story('Delete User');
+    await allure.severity('normal');
+
     const initialCount = await webTablesPage.getUserCount();
     await webTablesPage.deleteFirstUser();
     const newCount = await webTablesPage.getUserCount();

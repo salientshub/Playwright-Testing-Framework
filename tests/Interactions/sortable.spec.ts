@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { SortablePage } from '../../pages/Interactions/sortablePage';
+import { allure } from 'allure-js-commons';
 
 test.describe('Sortable Tests', () => {
     let sortablePage: SortablePage;
@@ -9,12 +10,22 @@ test.describe('Sortable Tests', () => {
         await sortablePage.navigate('/sortable');
     });
 
-    test('should display list items', async () => {
+    test('should display list items @sanity @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Sortable');
+        await allure.story('Display List');
+        await allure.severity('critical');
+
         const order = await sortablePage.getListOrder();
         expect(order.length).toBeGreaterThan(0);
     });
 
-    test('should drag and reorder list items', async ({ page }) => {
+    test('should drag and reorder list items @regression @interactions', async ({ page }) => {
+        await allure.epic('Interactions');
+        await allure.feature('Sortable');
+        await allure.story('Drag Reorder');
+        await allure.severity('normal');
+
         const initialOrder = await sortablePage.getListOrder();
 
         await expect(async () => {
@@ -39,7 +50,12 @@ test.describe('Sortable Tests', () => {
         }).toPass();
     });
 
-    test('should switch to grid view', async () => {
+    test('should switch to grid view @regression @interactions', async () => {
+        await allure.epic('Interactions');
+        await allure.feature('Sortable');
+        await allure.story('Grid View');
+        await allure.severity('normal');
+
         await sortablePage.switchToGrid();
         const gridItems = await sortablePage.getGridOrder();
         expect(gridItems.length).toBeGreaterThan(0);
