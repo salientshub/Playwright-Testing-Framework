@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { DatePickerPage } from '../../pages/Widgets/datePickerPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Date Picker Tests', () => {
     let datePage: DatePickerPage;

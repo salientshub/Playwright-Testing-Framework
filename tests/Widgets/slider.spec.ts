@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { SliderPage } from '../../pages/Widgets/sliderPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Slider Tests', () => {
     let sliderPage: SliderPage;

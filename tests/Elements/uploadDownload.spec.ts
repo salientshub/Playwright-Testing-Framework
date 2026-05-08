@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { UploadDownloadPage } from '../../pages/Elements/uploadDownloadPage';
 import * as path from 'path';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Upload & Download Tests', () => {
   let uploadPage: UploadDownloadPage;

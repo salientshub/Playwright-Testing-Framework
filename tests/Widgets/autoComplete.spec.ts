@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { AutoCompletePage } from '../../pages/Widgets/autoCompletePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Auto Complete Tests', () => {
     let autoPage: AutoCompletePage;

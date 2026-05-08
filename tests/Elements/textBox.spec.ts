@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { TextBoxPage } from '../../pages/Elements/textBoxPage';
 import { textBoxData } from '../../utils/testData';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Text Box Tests', () => {
   let textBoxPage: TextBoxPage;

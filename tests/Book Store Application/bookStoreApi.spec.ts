@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { ApiClient } from '../../utils/apiClient';
 import { bookStoreUser } from '../../utils/testData';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Book Store API Tests', () => {
     let apiClient: ApiClient;

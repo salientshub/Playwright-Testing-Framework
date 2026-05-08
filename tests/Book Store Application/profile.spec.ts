@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ProfilePage } from '../../pages/Book Store Application/profilePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Profile Tests', () => {
     let profilePage: ProfilePage;

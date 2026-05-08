@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { BrokenLinksImagesPage } from '../../pages/Elements/brokenLinksImagesPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Broken Links and Images Tests', () => {
     let brokenLinksPage: BrokenLinksImagesPage;

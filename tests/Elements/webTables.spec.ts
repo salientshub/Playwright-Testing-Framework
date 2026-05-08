@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { WebTablesPage } from '../../pages/Elements/webTablesPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Web Tables Tests', () => {
   let webTablesPage: WebTablesPage;

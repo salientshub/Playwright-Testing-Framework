@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { BrowserWindowsPage } from '../../pages/Alerts, Frame & Windows/browserWindowsPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Browser Windows Tests', () => {
     let windowsPage: BrowserWindowsPage;

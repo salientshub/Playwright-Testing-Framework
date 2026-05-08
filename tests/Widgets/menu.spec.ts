@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { MenuPage } from '../../pages/Widgets/menuPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Menu Tests', () => {
     let menuPage: MenuPage;

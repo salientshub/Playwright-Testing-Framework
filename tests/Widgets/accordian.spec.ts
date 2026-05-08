@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { AccordianPage } from '../../pages/Widgets/accordianPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Accordian Tests', () => {
     let accordianPage: AccordianPage;

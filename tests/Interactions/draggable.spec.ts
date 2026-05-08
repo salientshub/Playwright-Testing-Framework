@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { DraggablePage } from '../../pages/Interactions/draggablePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Draggable Tests', () => {
     let draggablePage: DraggablePage;

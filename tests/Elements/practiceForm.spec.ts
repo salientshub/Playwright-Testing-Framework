@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { PracticeFormPage } from '../../pages/Forms/practiceFormPage';
 import { practiceFormData } from '../../utils/testData';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Practice Form Tests', () => {
   let formPage: PracticeFormPage;

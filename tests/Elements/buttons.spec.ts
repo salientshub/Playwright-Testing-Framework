@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ButtonsPage } from '../../pages/Elements/buttonsPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Buttons Tests', () => {
   let buttonsPage: ButtonsPage;

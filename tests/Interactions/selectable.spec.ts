@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { SelectablePage } from '../../pages/Interactions/selectablePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Selectable Tests', () => {
     let selectablePage: SelectablePage;

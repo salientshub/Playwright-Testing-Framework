@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ResizablePage } from '../../pages/Interactions/resizablePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Resizable Tests', () => {
     let resizablePage: ResizablePage;

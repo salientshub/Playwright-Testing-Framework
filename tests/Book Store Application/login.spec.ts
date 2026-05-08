@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../../pages/Book Store Application/loginPage';
 import { bookStoreUser } from '../../utils/testData';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Book Store Login Tests', () => {
     let loginPage: LoginPage;

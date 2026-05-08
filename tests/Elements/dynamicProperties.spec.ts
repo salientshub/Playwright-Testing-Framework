@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { DynamicPropertiesPage } from '../../pages/Elements/dynamicPropertiesPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Dynamic Properties Tests', () => {
   let dynamicPage: DynamicPropertiesPage;

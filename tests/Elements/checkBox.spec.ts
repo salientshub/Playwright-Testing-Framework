@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { CheckBoxPage } from '../../pages/Elements/checkBoxPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Check Box Tests', () => {
   let checkBoxPage: CheckBoxPage;

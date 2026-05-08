@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { SortablePage } from '../../pages/Interactions/sortablePage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Sortable Tests', () => {
     let sortablePage: SortablePage;

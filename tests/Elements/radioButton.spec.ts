@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { RadioButtonPage } from '../../pages/Elements/radioButtonPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Radio Button Tests', () => {
   let radioPage: RadioButtonPage;

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { NestedFramesPage } from '../../pages/Alerts, Frame & Windows/nestedFramesPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Nested Frames Tests', () => {
     let nestedPage: NestedFramesPage;

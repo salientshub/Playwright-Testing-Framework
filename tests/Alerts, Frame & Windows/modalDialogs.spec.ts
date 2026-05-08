@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ModalDialogsPage } from '../../pages/Alerts, Frame & Windows/modalDialogsPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Modal Dialogs Tests', () => {
     let modalPage: ModalDialogsPage;

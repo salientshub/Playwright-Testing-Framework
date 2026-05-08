@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { ProgressBarPage } from '../../pages/Widgets/progressBarPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Progress Bar Tests', () => {
     let progressPage: ProgressBarPage;

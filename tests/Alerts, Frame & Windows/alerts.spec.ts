@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { AlertsPage } from '../../pages/Alerts, Frame & Windows/alertsPage';
-import { allure } from 'allure-js-commons';
+import * as allure from 'allure-js-commons';
 
 test.describe('Alerts Tests', () => {
     let alertsPage: AlertsPage;
